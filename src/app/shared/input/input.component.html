@@ -11,7 +11,7 @@
   <p *ngIf="control.errors?.['minlength']" class="text-red-400">
     It must be at least {{ control.errors?.['minlength'].requiredLength }} characters longs.
   </p>
-  <p *ngIf="control.errors?.['email']" class="text-red-400">
+  <p *ngIf="control.errors?.['pattern'] && type == 'email'" class="text-red-400">
     You must enter a valid email.
   </p>
   <p *ngIf="control.errors?.['min']" class="text-red-400">
@@ -20,7 +20,7 @@
   <p *ngIf="control.errors?.['max']" class="text-red-400">
     Value too high.
   </p>
-  <p *ngIf="control.errors?.['pattern']" class="text-red-400">
+  <p *ngIf="control.errors?.['pattern'] && type !== 'email' " class="text-red-400">
     Password must be at least 8 characters. Must contain at least 1 uppercase letter, 1 lowercase letter, and 1 number.
   </p>
 </ng-container>

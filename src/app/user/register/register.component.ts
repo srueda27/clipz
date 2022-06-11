@@ -13,7 +13,7 @@ export class RegisterComponent {
   ])
   email = new FormControl('',[
     Validators.required,
-    Validators.email
+    Validators.pattern(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g)
   ])
   age = new FormControl('', [
     Validators.required,
@@ -36,7 +36,7 @@ export class RegisterComponent {
 
   showAlert = false;
   alertMessage = 'Please wait! Your account is being created';
-  alertColor = 'blue'
+  alertColor = 'blue';
 
   registerForm = new FormGroup({
     name: this.name,
