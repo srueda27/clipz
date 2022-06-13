@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import IUser from 'src/app/models/user.model';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -23,7 +24,7 @@ export class RegisterComponent {
     Validators.required,
     Validators.pattern(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/)
   ])
-  age = new FormControl(0, [
+  age = new FormControl<number | null>(null, [
     Validators.required,
     Validators.min(18),
     Validators.max(120)
@@ -62,13 +63,7 @@ export class RegisterComponent {
     this.inSubmission = true;
 
     try {
-      const email = this.email.value!
-      const name = this.name.value!
-      const age = this.age.value!
-      const password = this.password.value!
-      const phoneNumber = this.phoneNumber.value!
-
-      await this.auth.createUser({ email, name, age, password, phoneNumber })
+      await this.auth.createUser(this.registerForm.getRawValue() as IUser)
     } catch (error) {
       console.error(error);
 
