@@ -19,6 +19,9 @@ export class InputComponent implements OnInit {
   @Input()
   format = '';
 
+  @Input()
+  min: string | undefined;
+
   constructor() { }
 
   ngOnInit(): void {
