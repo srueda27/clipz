@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import IUser from 'src/app/models/user.model';
 import { AuthService } from 'src/app/services/auth.service';
+import { EmailTaken } from '../validators/email-taken';
+import { RegisterValidators } from '../validators/register-validators';
 
 @Component({
   selector: 'app-register',
@@ -10,9 +12,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class RegisterComponent {
 
-  constructor(private auth: AuthService) {
-
-  }
+  constructor(private auth: AuthService, private emailTaken: EmailTaken) { }
 
   name = new FormControl('', [
     Validators.required,
@@ -21,6 +21,8 @@ export class RegisterComponent {
   email = new FormControl('', [
     Validators.required,
     Validators.pattern(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/)
+  ],[
+    this.emailTaken.validate
   ])
   age = new FormControl<number | null>(null, [
     Validators.required,
@@ -53,7 +55,9 @@ export class RegisterComponent {
     password: this.password,
     confirmPassword: this.confirmPassword,
     phoneNumber: this.phoneNumber
-  });
+  }, [
+    RegisterValidators.match('password', 'confirmPassword')
+  ]);
 
   async register() {
     this.showAlert = true;
