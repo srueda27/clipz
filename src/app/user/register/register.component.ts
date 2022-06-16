@@ -21,7 +21,7 @@ export class RegisterComponent {
   email = new FormControl('', [
     Validators.required,
     Validators.pattern(/[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/)
-  ],[
+  ], [
     this.emailTaken.validate
   ])
   age = new FormControl<number | null>(null, [
@@ -35,7 +35,6 @@ export class RegisterComponent {
   ])
   confirmPassword = new FormControl('', [
     Validators.required,
-
   ])
   phoneNumber = new FormControl('', [
     Validators.required,
@@ -66,7 +65,7 @@ export class RegisterComponent {
     this.inSubmission = true;
 
     try {
-      await this.auth.createUser(this.registerForm.getRawValue() as IUser)
+      await this.auth.createUser(this.registerForm.value as IUser)
     } catch (error) {
       console.error(error);
 

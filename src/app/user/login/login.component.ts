@@ -29,13 +29,15 @@ export class LoginComponent implements OnInit {
     this.inSubmission = true;
 
     try {
-      await this.auth.signInWithEmailAndPassword(this.credentials.email, this.credentials.password);
-    } catch (error) {
-      console.error(error)
+      const abc = await this.auth.signInWithEmailAndPassword(this.credentials.email, this.credentials.password);
+    } catch (error: any) {
+      console.log(error.code)
       
       this.alertMessage = 'An unexpected error ocurred. Please try again later';
       this.alertColor = 'red';
       this.inSubmission = false;
+
+      return
     }
 
     this.alertMessage = 'Success! You have been login';

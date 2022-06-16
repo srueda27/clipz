@@ -26,9 +26,9 @@ export class RegisterValidators {
 
       if (error) {
         matchingControl.addValidators(() => { return error })
+      } else {
+        matchingControl.setErrors(error)
       }
-
-      // matchingControl.setErrors(error)
 
       return error
     }
