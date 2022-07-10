@@ -1,6 +1,7 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import IClip from 'src/app/models/clip.model';
+import { ClipService } from 'src/app/services/clip.service';
 import { ModalService } from 'src/app/services/modal.service';
 
 @Component({
@@ -13,12 +14,16 @@ export class EditComponent implements OnInit, OnDestroy, OnChanges {
   activeClip: IClip | null = null
 
   showAlert = false;
-  alertMessage = 'Please wait! Your file is being uploaded.';
-  alertColor = 'blue';
   inSubmission = false;
+  alertMessage = 'Please wait! Updating clip.';
+  alertColor = 'blue';
+
+  @Output()
+  update = new EventEmitter()
 
   constructor(
-    private modal: ModalService
+    private modal: ModalService,
+    private clipService: ClipService
   ) { }
 
   clipID = new FormControl('', {
@@ -51,11 +56,39 @@ export class EditComponent implements OnInit, OnDestroy, OnChanges {
       return
     }
 
+    this.inSubmission = false
+    this.showAlert = false
+
     this.clipID.setValue(this.activeClip.docID || '')
     this.title.setValue(this.activeClip.title)
   }
 
-  submit() {
-    
+  async submit() {
+    if (!this.activeClip) {
+      return
+    }
+
+    this.inSubmission = true
+    this.showAlert = true
+    this.alertColor = 'blue'
+    this.alertMessage = 'Please wait! Updating clip.'
+
+    try {
+      await this.clipService.updateClip(
+        this.clipID.value,
+        this.title.value
+      )
+    } catch (error) {
+      this.inSubmission = false
+      this.alertColor = 'red'
+      this.alertMessage = 'Something went wrong. Try again later'
+    }
+
+    this.activeClip.title = this.title.value
+    this.update.emit(this.activeClip)
+
+    this.inSubmission = false
+    this.alertColor = 'green'
+    this.alertMessage = 'Success!.'
   }
 }
