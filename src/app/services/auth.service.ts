@@ -21,7 +21,7 @@ export class AuthService {
     private router: Router,
     private route: ActivatedRoute
   ) {
-    this.userCollections = db.collection('users')
+    this.userCollections = this.db.collection('users')
     
     this.isAuthenticated$ = auth.user.pipe(
       map(user => {
