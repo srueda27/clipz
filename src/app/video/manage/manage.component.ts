@@ -25,7 +25,7 @@ export class ManageComponent implements OnInit {
     private modal: ModalService
   ) {
     this.sort$ = new BehaviorSubject(this.videoOrder)
-    
+
     // for demostration propuses
     /* this.sort$.subscribe(console.log)
     this.sort$.next('test') */
@@ -83,5 +83,20 @@ export class ManageComponent implements OnInit {
         this.clips.splice(index, 1)
       }
     })
+  }
+
+  async copyToClipboard($event: MouseEvent, docID: string | undefined) {
+    $event.preventDefault()
+
+    if (!docID) {
+      return
+    }
+
+    // location object is define by the browser and gives info about where the browser is located 
+    const url = `${location.origin}/clip/${docID}`
+
+    await navigator.clipboard.writeText(url)
+
+    alert('Link Copied!')
   }
 }
