@@ -22,7 +22,11 @@ export class AuthService {
     private route: ActivatedRoute
   ) {
     this.userCollections = this.db.collection('users')
-    
+
+    auth.user.subscribe(user => {
+      this.redirect = !!user
+    })
+
     this.isAuthenticated$ = auth.user.pipe(
       map(user => {
         if (user) {
@@ -32,18 +36,19 @@ export class AuthService {
         }
       })
     )
-    
+
     this.isAuthenticatedWithDelay$ = this.isAuthenticated$.pipe(
       delay(1000)
     )
-    
-    this.router.events.pipe(
+
+    /* this.router.events.pipe(
       filter(e => e instanceof NavigationEnd),
       map(e => this.route.firstChild),
       switchMap(route => route?.data ?? of({}))
     ).subscribe(data => {
+      console.log('data: ', data)
       this.redirect = data['authOnly'] ?? false
-    })
+    }) */
   }
 
   public async createUser(userData: IUser) {
