@@ -11,7 +11,7 @@ const routes: Routes = [
     path: 'manage',
     component: ManageComponent,
     data: {
-      // authOnly: true,
+      authOnly: true,
       authGuardPipe: redirectUnauthorizedToHome
     },
     canActivate: [AngularFireAuthGuard]
@@ -20,7 +20,7 @@ const routes: Routes = [
     path: 'upload',
     component: UploadComponent,
     data: {
-      // authOnly: true,
+      authOnly: true,
       authGuardPipe: redirectUnauthorizedToHome
     },
     canActivate: [AngularFireAuthGuard]

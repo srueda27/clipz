@@ -37,7 +37,7 @@ export class UploadComponent implements OnDestroy {
     public ffmpegService: FfmpegService
   ) {
     this.auth.user.subscribe(user => this.user = user)
-    this.ffmpegService.init()
+    // this.ffmpegService.init()
   }
 
   title = new FormControl('', {
