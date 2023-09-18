@@ -16,6 +16,8 @@ export class ManageComponent implements OnInit {
   activeClip: IClip | null = null
 
   // the $ after the property is to noted that it is an observable for other delevelopers
+  // a BehaviorSubject observable also allows to push data, normally an observable is only to "wait" for data or to subscribe
+  // This allows to work both as observable and observer
   sort$: BehaviorSubject<string>
 
   constructor(
@@ -27,6 +29,7 @@ export class ManageComponent implements OnInit {
     this.sort$ = new BehaviorSubject(this.videoOrder)
 
     // for demostration propuses
+    // It works both as subscribe (getting data) and next (sending data)
     /* this.sort$.subscribe(console.log)
     this.sort$.next('test') */
   }
@@ -92,7 +95,7 @@ export class ManageComponent implements OnInit {
       return
     }
 
-    // location object is define by the browser and gives info about where the browser is located 
+    // location object is define by the browser and gives info about where the browser is located
     const url = `${location.origin}/clip/${docID}`
 
     await navigator.clipboard.writeText(url)

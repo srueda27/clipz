@@ -53,7 +53,7 @@ export class AuthService {
       }),
       mergeMap((route) => route.data)
     ).subscribe(data => {
-      console.log('data: ', data['authOnly'])
+      // console.log('data: ', data['authOnly'])
       this.redirect = data['authOnly'] ?? false
     })
   }

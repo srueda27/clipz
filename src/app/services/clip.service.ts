@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore, AngularFirestoreCollection, DocumentReference, QuerySnapshot } from '@angular/fire/compat/firestore';
-import { BehaviorSubject, combineLatest, lastValueFrom, map, Observable, of, switchMap } from 'rxjs';
+import { BehaviorSubject, combineLatest, lastValueFrom, map, of, switchMap } from 'rxjs';
 import { AngularFireStorage } from '@angular/fire/compat/storage'
 
 import IClip from '../models/clip.model';
@@ -29,6 +29,23 @@ export class ClipService implements Resolve<IClip | null>{
   }
 
   getUserClips(sort$: BehaviorSubject<string>) {
+    /*
+    // The switchMap operator is used to handle asynchronous operations, such as HTTP requests or Observables that emit values over time.
+    this.currentLanguage$.pipe(
+      switchMap(idioma => {
+        if (idioma && idioma != this.currentLanguage) {
+          return this.loadTranslations(idioma).pipe(
+            tap(traducciones => {
+              this.translations = traducciones;
+              this.currentLanguage = idioma
+            })
+          )
+        } else {
+          return of(this.translations)
+        }
+      })
+    ).subscribe() */
+
     return combineLatest([
       this.auth.user,
       sort$
@@ -37,7 +54,7 @@ export class ClipService implements Resolve<IClip | null>{
         const [user, sort] = values
 
         if (!user) {
-          of([])
+          return of([])
         }
 
         const query = this.clipsCollection.ref.where('uid', '==', user!.uid).orderBy(
