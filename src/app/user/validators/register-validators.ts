@@ -1,7 +1,7 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
 
 export class RegisterValidators {
-  /* 
+  /*
   static methods let us use the method without creating a new instance of the method
   But do not allow us to use properties/methods of the class
 
@@ -10,7 +10,7 @@ export class RegisterValidators {
     console.log(this.test)
   }
 
-  would throw an error 
+  would throw an error
  */
   static match(controlName: string, matchingControlName: string): ValidatorFn {
     return (group: AbstractControl): ValidationErrors | null => {
@@ -25,8 +25,8 @@ export class RegisterValidators {
       const error = control.value === matchingControl.value ? null : { noMatch: true }
 
       if (error) {
-        matchingControl.addValidators(() => { return error })
-      } else {
+        matchingControl.setErrors({ ...matchingControl.errors, ...error });
+      } else if (matchingControl.hasError('noMatch')) {
         matchingControl.setErrors(error)
       }
 
